@@ -1,5 +1,6 @@
 package edu.smith.cs.csc212.p2;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -42,6 +43,7 @@ public class FishGame {
 	 * Score!
 	 */
 	int score;
+	static int numrocks=6;
 	
 	/**
 	 * Create a FishGame of a particular size.
@@ -57,13 +59,14 @@ public class FishGame {
 		// Add a home!
 		home = world.insertFishHome();
 		
-		// TODO(lab) Generate some more rocks!
-		// TODO(lab) Make 5 into a constant, so it's easier to find & change.
-		for (int i=0; i<5; i++) {
+	
+		
+		for (int i=0; i<numrocks; i++) {
 			world.insertRockRandomly();
 		}
 		
-		// TODO(lab) Make the snail!
+		Snail al=new Snail(world);
+		world.insertRandomly(al);
 		
 		// Make the player out of the 0th fish color.
 		player = new Fish(0, world);
@@ -114,14 +117,23 @@ public class FishGame {
 			// It is missing if it's in our missing list.
 			if (missing.contains(wo)) {
 				// Remove this fish from the missing list.
+
+		
 				missing.remove(wo);
 				
+				
+				
 				// Remove from world.
-				// TODO(lab): add to found instead! (So we see objectsFollow work!)
-				world.remove(wo);
+				
+				found.add((Fish) wo);
+			
 				
 				// Increase score when you find a fish!
-				score += 10;
+				if(((Fish) wo).getColor().equals(Color.black)) {
+					score += 20;}
+				else {
+					score+=10;
+				}
 			}
 		}
 		
@@ -141,7 +153,7 @@ public class FishGame {
 		for (Fish lost : missing) {
 			// 30% of the time, lost fish move randomly.
 			if (rand.nextDouble() < 0.3) {
-				// TODO(lab): What goes here?
+				lost.moveRandomly();
 			}
 		}
 	}
@@ -155,7 +167,7 @@ public class FishGame {
 		// TODO(P2) use this print to debug your World.canSwim changes!
 		System.out.println("Clicked on: "+x+","+y+ " world.canSwim(player,...)="+world.canSwim(player, x, y));
 		List<WorldObject> atPoint = world.find(x, y);
-		// TODO(P2) allow the user to click and remove rocks.
+		
 
 	}
 	
